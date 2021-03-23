@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import M from 'materialize-css';
 import Vuelidate from 'vuelidate';
 import messagePlugin from '@/plugins/message.plugin';
 import firebase from 'firebase/app';
-import dateFilter from './filters/data.filter';
+import dateFilter from '@/filters/data.filter';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -12,9 +11,10 @@ import 'materialize-css/dist/js/materialize.min';
 
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/database';
 
 Vue.config.productionTip = false;
-Vue.use(M);
+// Vue.use(M);
 Vue.use(messagePlugin);
 Vue.use(Vuelidate);
 Vue.filter('date', dateFilter);
@@ -34,10 +34,9 @@ let app;
 
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
-    new Vue({
+    app = new Vue({
       router,
       store,
-      M,
       render: (h) => h(App),
     }).$mount('#app');
   }

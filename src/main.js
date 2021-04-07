@@ -3,6 +3,8 @@ import Vuelidate from 'vuelidate';
 import messagePlugin from '@/plugins/message.plugin';
 import firebase from 'firebase/app';
 import dateFilter from '@/filters/data.filter';
+import currencyFilter from '@/filters/currency.filter';
+import Loader from '@/components/app/Loader.vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -10,7 +12,7 @@ import './registerServiceWorker';
 import 'materialize-css/dist/js/materialize.min';
 
 import 'firebase/auth';
-import 'firebase/firestore';
+// import 'firebase/firestore';
 import 'firebase/database';
 
 Vue.config.productionTip = false;
@@ -18,14 +20,17 @@ Vue.config.productionTip = false;
 Vue.use(messagePlugin);
 Vue.use(Vuelidate);
 Vue.filter('date', dateFilter);
+Vue.filter('currency', currencyFilter);
+Vue.component('Loader', Loader);
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAEzU9TQlmX_aDwAPdNGQBUhNQSPd6abzo',
-  authDomain: 'vue-crm-6c041.firebaseapp.com',
-  projectId: 'vue-crm-6c041',
-  storageBucket: 'vue-crm-6c041.appspot.com',
-  messagingSenderId: '694476642310',
-  appId: '1:694476642310:web:3d1b845884391ebddf4b87',
+  apiKey: 'AIzaSyDLCdlctUPEkCvxZcPhdoRSuKKiNKLyMTQ',
+  authDomain: 'testing-277608.firebaseapp.com',
+  databaseURL: 'https://testing-277608-default-rtdb.firebaseio.com',
+  projectId: 'testing-277608',
+  storageBucket: 'testing-277608.appspot.com',
+  messagingSenderId: '455597853441',
+  appId: '1:455597853441:web:8ddf442555a1dd4260a900',
 };
 
 firebase.initializeApp(firebaseConfig);

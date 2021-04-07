@@ -9,7 +9,7 @@ export default {
       M.toast({ html });
     };
 
-    Vue.prototype.$eror = (html) => {
+    Vue.prototype.$error = (html) => {
       M.toast({ html: `[Ошибка]: ${html}` });
     };
   },

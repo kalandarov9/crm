@@ -123,35 +123,25 @@ export default {
   },
 
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch();
         return;
       }
+
       const formData = {
         email: this.email,
         password: this.password,
-        // name: this.name,
+        name: this.name,
       };
 
-      console.log(formData);
-
-      // this.$store.dispatch('reg', formData);
-      this.$router.push('/');
-
-      // try {
-      //   await this.$store.dispatch('reg', formData);
-      //   this.$router.push('/');
-      // // eslint-disable-next-line no-empty
-      // } catch (e) {
-      //   console.log(e);
-      // }
-
-      // this.$router.push('/');
-      // console.log(formData);
+      try {
+        await this.$store.dispatch('register', formData);
+        this.$router.push('/');
+      // eslint-disable-next-line no-empty
+      } catch (e) {
+      }
     },
   },
-
 };
-
 </script>

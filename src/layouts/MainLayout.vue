@@ -1,4 +1,8 @@
 <template>
+
+<Loader v-if="loading" />
+
+<div v-else>
   <div class="app-main-layout">
 
     <Navbar @menuInvisible="isOpen = !isOpen" />
@@ -19,6 +23,7 @@
     </router-link>
   </div>
 
+  </div>
 </div>
 </template>
 
@@ -28,13 +33,24 @@ import Navbar from '../components/app/Navbar.vue';
 
 export default {
   name: 'main-layout',
-  components: {
-    Navbar, Sidebar,
-  },
+
   data() {
     return {
       isOpen: false,
+      loading: true,
     };
+  },
+
+  async mounted() {
+    if (!Object.keys(this.$store.getters.info).length) {
+      await this.$store.dispatch('fetchInfo');
+    }
+
+    this.loading = false;
+  },
+
+  components: {
+    Navbar, Sidebar,
   },
 
 };

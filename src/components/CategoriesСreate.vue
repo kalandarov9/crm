@@ -78,7 +78,6 @@ export default {
             minValue: this.minValue,
           });
 
-          // console.log(category);
           if (!category) {
             this.$message(`Категория ${this.name} уже существует`);
           } else {

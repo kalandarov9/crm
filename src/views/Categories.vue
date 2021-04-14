@@ -1,14 +1,21 @@
 <template>
+
   <div>
   <div class="page-title">
     <h3>Категории</h3>
   </div>
     <section>
-      <div class="row">
+       <Loader v-if="loading" />
+      <div class="row" v-else>
 
-        <CategoriesCreate @created="addCategory"/>
+        <CategoriesCreate @created="addCategory" />
 
-        <CategoriesEdit />
+        <CategoriesEdit
+          :categories="categories"
+          @getListsCategory="getListsCategory"
+          :key="categories.length"
+        />
+
       </div>
     </section>
   </div>
@@ -19,10 +26,11 @@ import CategoriesCreate from '@/components/CategoriesСreate.vue';
 import CategoriesEdit from '@/components/CategoriesEdit.vue';
 
 export default {
-  name: 'categorries',
+  name: 'categories',
   data() {
     return {
       categories: [],
+      loading: true,
     };
   },
 
@@ -30,11 +38,22 @@ export default {
     addCategory(category) {
       this.categories.push(category);
       console.log(this.categories);
+      // return this.getListsCategory();
+    },
+
+    async getListsCategory() {
+      this.loading = true;
+      this.categories = await this.$store.dispatch('getListsCategory');
+      this.loading = false;
     },
   },
 
   components: {
     CategoriesCreate, CategoriesEdit,
+  },
+
+  async mounted() {
+    return this.getListsCategory();
   },
 
 };

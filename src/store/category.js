@@ -20,6 +20,39 @@ export default {
       }
     },
 
+    async editCategory({ dispatch, commit }, { name, minValue, id }) {
+      try {
+        const uid = await dispatch('getUid');
+        await firebase.database().ref(`/users/${uid}/categories/${id}`).update({ name, minValue });
+        return { name, minValue, id };
+      } catch (e) {
+        commit('setError', e);
+        throw (e);
+      }
+    },
+
+    async getListsCategory({ dispatch, commit }) {
+      try {
+        const uid = await dispatch('getUid');
+        const ref = (await firebase.database().ref(`/users/${uid}/categories/`).once('value')).val();
+        // const t = ref.val();
+
+        const categories = [];
+        Object.entries(ref).forEach(([key, value]) => {
+          categories.push({
+            id: key,
+            name: value.name,
+            minValue: value.minValue,
+          });
+        });
+
+        return categories;
+      } catch (e) {
+        commit('setError', e);
+        throw (e);
+      }
+    },
+
     // eslint-disable-next-line no-unused-vars
     async checkCategory({ dispatch, commit }, { name }) {
       try {

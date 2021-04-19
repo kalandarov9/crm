@@ -7,15 +7,12 @@
     <section>
        <Loader v-if="loading" />
       <div class="row" v-else>
-
         <CategoriesCreate @created="addCategory" />
-
         <CategoriesEdit
           :categories="categories"
           @getListsCategory="getListsCategory"
           :key="categories.length"
         />
-
       </div>
     </section>
   </div>

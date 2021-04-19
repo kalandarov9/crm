@@ -106,14 +106,15 @@ export default {
   },
 
   watch: {
-    currency() {
+    currency(id) {
       // console.log(this.categories);
-      console.log(this.categories);
+      console.log(id);
 
       // eslint-disable-next-line array-callback-return
       return (Object.values(this.categories).map((e) => {
-        if (e.name === this.name) {
+        if (e.name === id) {
           this.minValue = e.minValue;
+          this.name = e.name;
           this.id = e.id;
           this.form = true;
         }

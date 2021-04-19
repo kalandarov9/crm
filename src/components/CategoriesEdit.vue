@@ -8,7 +8,7 @@
       <form @submit.prevent="editCategory">
 
         <div class="input-field">
-          <select v-model="name">
+          <select v-model="currency">
             <option disabled value="">Выберите один из вариантов</option>
             <option
             v-for="category in categories"
@@ -74,6 +74,7 @@ export default {
       minValue: '',
       id: '',
       form: false,
+      currency: null,
     };
   },
 
@@ -105,7 +106,10 @@ export default {
   },
 
   watch: {
-    name() {
+    currency() {
+      // console.log(this.categories);
+      console.log(this.categories);
+
       // eslint-disable-next-line array-callback-return
       return (Object.values(this.categories).map((e) => {
         if (e.name === this.name) {

@@ -89,14 +89,14 @@ export default {
         this.$v.$touch();
       } else {
         try {
-          await this.$store.dispatch('editCategory', {
+          const dataCategoties = {
+            id: this.id,
             name: this.name,
             minValue: this.minValue,
-            id: this.id,
-          });
-          // console.log(res);
+          };
+          await this.$store.dispatch('editCategory', dataCategoties);
           this.$message(`Категория ${this.name} изменнена`);
-          this.$emit('getListsCategory');
+          this.$emit('updateCategories', dataCategoties);
           return;
         } catch (e) {
           console.log(`${e} `);
@@ -109,7 +109,6 @@ export default {
     currency(id) {
       // console.log(this.categories);
       console.log(id);
-
       // eslint-disable-next-line array-callback-return
       return (Object.values(this.categories).map((e) => {
         if (e.name === id) {

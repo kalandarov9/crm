@@ -20,7 +20,7 @@ export default {
       }
     },
 
-    async editCategory({ dispatch, commit }, { name, minValue, id }) {
+    async editCategory({ dispatch, commit }, { id, name, minValue }) {
       try {
         const uid = await dispatch('getUid');
         await firebase.database().ref(`/users/${uid}/categories/${id}`).update({ name, minValue });

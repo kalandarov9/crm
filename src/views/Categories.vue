@@ -10,7 +10,7 @@
         <CategoriesCreate @created="addCategory" />
         <CategoriesEdit
           :categories="categories"
-          @getListsCategory="getListsCategory"
+          @updateCategories="updateCategories"
           :key="categories.length"
         />
       </div>
@@ -34,8 +34,12 @@ export default {
   methods: {
     addCategory(category) {
       this.categories.push(category);
-      console.log(this.categories);
-      // return this.getListsCategory();
+    },
+
+    updateCategories(data) {
+      console.log(data);
+      // const idx = data.find(categories => this.с.id === data.id);
+      // console.log(idx);
     },
 
     async getListsCategory() {

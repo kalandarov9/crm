@@ -11,7 +11,7 @@
         <CategoriesEdit
           :categories="categories"
           @updateCategories="updateCategories"
-          :key="categories.length"
+          :key="categories.length + update"
         />
       </div>
     </section>
@@ -28,6 +28,7 @@ export default {
     return {
       categories: [],
       loading: true,
+      update: 0,
     };
   },
 
@@ -36,10 +37,11 @@ export default {
       this.categories.push(category);
     },
 
-    updateCategories(data) {
-      console.log(data);
-      // const idx = data.find(categories => this.с.id === data.id);
-      // console.log(idx);
+    updateCategories(category) {
+      const idx = this.categories.findIndex((c) => c.id === category.id);
+      this.categories[idx].name = category.name;
+      this.categories[idx].minValue = category.minValue;
+      this.update += 1;
     },
 
     async getListsCategory() {

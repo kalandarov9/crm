@@ -63,3 +63,21 @@
     </form>
   </div>
 </template>
+
+<script>
+
+export default {
+  data() {
+    return {
+    };
+  },
+
+  mounted() {
+    // eslint-disable-next-line no-undef
+    M.AutoInit();
+    // eslint-disable-next-line no-undef
+    M.updateTextFields();
+  },
+
+};
+</script>

@@ -22,6 +22,7 @@
 
         <div class="input-field">
           <input
+          :disabled="disabled"
           type="text"
           id="name"
           v-model="name"
@@ -37,8 +38,11 @@
         </div>
 
         <div class="input-field">
-          <input id="limit" type="number"
-            :class="{invalid: ($v.minValue.$dirty && !$v.minValue.minValue) ||
+          <input
+          id="limit"
+          type="number"
+          :disabled="disabled"
+          :class="{invalid: ($v.minValue.$dirty && !$v.minValue.minValue) ||
               ($v.minValue.$dirty && !$v.minValue.required)}"
           v-model.number="minValue"
           />
@@ -75,6 +79,7 @@ export default {
       id: '',
       form: false,
       currency: null,
+      disabled: true,
     };
   },
 
@@ -107,8 +112,8 @@ export default {
 
   watch: {
     currency(id) {
-      // console.log(this.categories);
       console.log(id);
+      this.disabled = false;
       // eslint-disable-next-line array-callback-return
       return (Object.values(this.categories).map((e) => {
         if (e.name === id) {
@@ -125,7 +130,7 @@ export default {
     // eslint-disable-next-line no-undef
     M.AutoInit();
     // eslint-disable-next-line no-undef
-    // M.updateTextFields();
+    M.updateTextFields();
   },
 
 };

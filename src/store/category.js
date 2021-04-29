@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 export default {
 
   actions: {
-    // eslint-disable-next-line no-unused-vars
+
     async createCategory({ dispatch, commit }, { name, minValue }) {
       try {
         const uid = await dispatch('getUid');
@@ -53,7 +53,6 @@ export default {
       }
     },
 
-    // eslint-disable-next-line no-unused-vars
     async checkCategory({ dispatch, commit }, { name }) {
       try {
         const uid = await dispatch('getUid');

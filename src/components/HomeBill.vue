@@ -19,12 +19,13 @@ export default {
   data() {
     return {
       currency: ['RUB', 'USD', 'EUR'],
+      bill: null,
     };
   },
 
   computed: {
     base() {
-      return this.$store.getters.info.bill / (this.rates.RUB / this.rates.EUR);
+      return this.bill / (this.rates.RUB / this.rates.EUR);
     },
   },
 
@@ -32,6 +33,10 @@ export default {
     getCurrency(currency) {
       return Math.floor(this.base * this.rates[currency]);
     },
+  },
+
+  async mounted() {
+    this.bill = this.$store.getters.info.bill;
   },
 };
 </script>

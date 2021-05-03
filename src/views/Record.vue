@@ -10,7 +10,7 @@
           <option
           v-for="c in categories"
           :key="c.id"
-          :value="c.name"
+          :value="c.id"
           >{{c.name}}</option>
         </select>
         <label>Выберите категорию</label>
@@ -82,15 +82,7 @@
 
 <script>
 import { required, minValue } from 'vuelidate/lib/validators';
-
-// const checkNumber = async (value) => {
-//   const res = await this.$store.dispatch('mauthBill', {
-//     type: this.type,
-//     amount: this.amount,
-//   });
-//   console.log(res);
-//   console.log(value);
-// };
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -98,7 +90,7 @@ export default {
       categories: [],
       category: null,
       type: 'income',
-      amount: null,
+      amount: 1,
       description: null,
     };
   },
@@ -111,44 +103,48 @@ export default {
     },
   },
 
-  methods: {
-    async myVal() {
-      console.log('s');
-      await this.$store.dispatch('mauthBill', {
-        type: this.type,
-        amount: this.amount,
-      });
+  computed: {
+    ...mapGetters(['info']),
+    checkNegativeAmount() {
+      if (this.type === 'income') {
+        return true;
+      }
+      return this.info.bill >= this.amount;
     },
+  },
+
+  methods: {
 
     async submit() {
       if (this.$v.$invalid) {
         this.$v.$touch();
-      } else {
+      }
+      if (this.checkNegativeAmount) {
         try {
-          const res = await this.$store.dispatch('mauthBill', {
-            type: this.type,
-            amount: this.amount,
-          });
-          if (res === false) {
-            this.$message('Вы вышли за пределы своего бюджета');
-            return;
-          }
           const dataRecord = {
-            name: this.category,
+            categoryId: this.category,
             type: this.type,
             amount: this.amount,
             description: this.description,
             date: JSON.stringify(new Date()),
           };
           await this.$store.dispatch('addRecord', dataRecord);
-          this.$message(`Запись для ${this.category} созданна`);
-          this.amount = '';
+
+          const bill = this.type === 'income'
+            ? this.info.bill + this.amount
+            : this.info.bill - this.amount;
+
+          await this.$store.dispatch('updateInfo', { bill });
+          this.$message('Запись созданна');
+          this.amount = 1;
           this.description = '';
           this.$v.$reset();
           return;
         } catch (e) {
           console.log(e);
         }
+      } else {
+        this.$message(` Вам не хватило: ${this.amount - this.info.bill}`);
       }
     },
   },
@@ -159,7 +155,7 @@ export default {
     M.updateTextFields();
 
     if (this.categories.length) {
-      this.category = this.categories[0].name;
+      this.category = this.categories[0].id;
     }
     // eslint-disable-next-line no-undef
     setTimeout(() => { M.AutoInit(); }, 0);

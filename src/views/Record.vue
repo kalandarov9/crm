@@ -118,8 +118,7 @@ export default {
     async submit() {
       if (this.$v.$invalid) {
         this.$v.$touch();
-      }
-      if (this.checkNegativeAmount) {
+      } else if (this.checkNegativeAmount) {
         try {
           const dataRecord = {
             categoryId: this.category,

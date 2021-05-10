@@ -35,7 +35,6 @@ export default {
       try {
         const uid = await dispatch('getUid');
         const ref = (await firebase.database().ref(`/users/${uid}/categories/`).once('value')).val();
-        // const t = ref.val();
 
         const categories = [];
         Object.entries(ref).forEach(([key, value]) => {

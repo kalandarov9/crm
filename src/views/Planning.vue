@@ -7,7 +7,7 @@
     <section>
       <div v-for="cat of categories" :key="cat.id">
         <p>
-          <strong>{{ cat.name }} {{cat.res}}</strong>
+          <strong>{{ cat.name }} </strong>
           {{ cat.res | currency }} из {{ cat.minValue | currency}}
         </p>
         <div class="progress" v-tooltip="cat.tooltip">
@@ -61,7 +61,6 @@ export default {
         : (procent < 90) ? 'yellow' : 'red';
 
       const tooltipValue = cat.minValue - res;
-      console.log(tooltipValue);
       const tooltip = (tooltipValue > 0) ? `Осталось потратить: ${currencyFilter(tooltipValue)}` : `Привысили лимит на ${currencyFilter(tooltipValue)} `;
 
       return {

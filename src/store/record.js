@@ -33,6 +33,7 @@ export default {
             id: value.categoryId,
             amount: value.amount,
             type: value.type,
+            date: value.date,
           });
         });
 

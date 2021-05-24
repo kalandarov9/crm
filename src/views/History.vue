@@ -8,70 +8,65 @@
       <canvas></canvas>
     </div>
 
-    <section>
-      <table>
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Сумма</th>
-          <th>Дата</th>
-          <th>Категория</th>
-          <th>Тип</th>
-          <th>Открыть</th>
-        </tr>
-        </thead>
+    <Loader v-if="loading" />
 
-        <tbody>
-        <tr v-for="rec in records" :key="rec.id">
-          <td>{{ rec.count }}</td>
-          <td>{{ rec.amount | currency()}} </td>
-          <td>{{ JSON.parse(rec.date) }}</td>
-          <td>{{rec.categorieName}} </td>
-          <td>
-            <span
-            class="white-text badge"
-            :class="(rec.type === 'income') ? 'green' : 'red'"
-            >{{rec.type}}</span>
-          </td>
-          <td>
-            <button class="btn-small btn">
-              <i class="material-icons">open_in_new</i>
-            </button>
-          </td>
-        </tr>
+    <p class="center" v-else-if="!items.length">
+      Нет записей.
+      <router-link to="/record"> Cоздать </router-link>
+    </p>
+    <section v-else>
+      <HistoryTable :records="items" />
 
-        </tbody>
-      </table>
-
+      <Paginate
+      :page-count="pageCount"
+      :click-handler="pageChangeHandler"
+      :prev-text="'Назад'"
+      :next-text="'Вперед'"
+      :container-class="'pagination'"
+      :page-class="'waves-effect'">
+      >
+      </Paginate>
     </section>
   </div>
 </template>
 
 <script>
+import HistoryTable from '@/components/HistoryTable.vue';
+import paginationMixin from '@/mixins/pagination.mixins';
+
 export default {
   name: 'history',
+  mixins: [paginationMixin],
   data() {
     return {
-      records: null,
-      count: 0,
+      records: [],
+      categories: [],
+      loading: true,
     };
   },
 
-  async mounted() {
-    const categories = await this.$store.dispatch('getListsCategory');
-    const records = await this.$store.dispatch('getListRecord');
+  methods: {
+  },
 
-    this.records = records.map((rec) => {
-      this.count += 1;
-      const cat = categories.filter((r) => r.id === rec.id);
-      return {
-        count: this.count,
-        amount: rec.amount,
-        categorieName: cat[0].name,
-        date: rec.date,
-        type: rec.type,
-      };
-    });
+  async mounted() {
+    this.categories = await this.$store.dispatch('getListsCategory');
+    const records = await this.$store.dispatch('getListRecord');
+    if (records.length) {
+      this.setupPagination(records.map((rec) => {
+        const cat = this.categories.find((r) => r.id === rec.id).name;
+        return {
+          ...rec,
+          categorieName: cat,
+          typeClass: rec.type === 'income' ? 'green' : 'red',
+          typeText: rec.type === 'income' ? 'Приход' : 'Расход',
+        };
+      }));
+    }
+    this.loading = false;
+  },
+
+  components: {
+    HistoryTable,
   },
 };
 </script>

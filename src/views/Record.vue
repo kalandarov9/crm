@@ -125,7 +125,8 @@ export default {
             type: this.type,
             amount: this.amount,
             description: this.description,
-            date: JSON.stringify(new Date()),
+            date: new Date().toJSON(),
+            // date: new Date(),
           };
           await this.$store.dispatch('addRecord', dataRecord);
 

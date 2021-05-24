@@ -3,7 +3,10 @@ import Vuelidate from 'vuelidate';
 import messagePlugin from '@/plugins/message.plugin';
 import firebase from 'firebase/app';
 import dateFilter from '@/filters/data.filter';
+import Paginate from 'vuejs-paginate';
 import currencyFilter from '@/filters/currency.filter';
+import VueMoment from 'vue-moment';
+import moment from 'moment-timezone';
 import tooltipDirectives from '@/directives/tooltip.directives';
 import Loader from '@/components/app/Loader.vue';
 import App from './App.vue';
@@ -24,7 +27,10 @@ Vue.filter('date', dateFilter);
 Vue.filter('currency', currencyFilter);
 Vue.directive('tooltip', tooltipDirectives);
 Vue.component('Loader', Loader);
-
+Vue.component('Paginate', Paginate);
+Vue.use(VueMoment, {
+  moment,
+});
 const firebaseConfig = {
   apiKey: 'AIzaSyDLCdlctUPEkCvxZcPhdoRSuKKiNKLyMTQ',
   authDomain: 'testing-277608.firebaseapp.com',

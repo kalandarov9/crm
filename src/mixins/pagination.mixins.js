@@ -13,6 +13,9 @@ export default {
 
   methods: {
     pageChangeHandler(page) {
+      // console.log(this.allItems);
+      console.log(this.items);
+
       this.$router.push(`${this.$route.path}?page=${page}`);
       this.items = this.allItems[page - 1] || this.allItems[0];
     },

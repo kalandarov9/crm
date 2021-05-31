@@ -61,7 +61,7 @@ export default {
         : (procent < 90) ? 'yellow' : 'red';
 
       const tooltipValue = cat.minValue - res;
-      const tooltip = (tooltipValue > 0) ? `Осталось потратить: ${currencyFilter(tooltipValue)}` : `Привысили лимит на ${currencyFilter(tooltipValue)} `;
+      const tooltip = (tooltipValue > 0) ? `Осталось потратить: ${currencyFilter(tooltipValue)}` : `Превысили лимит на ${currencyFilter(tooltipValue)} `;
 
       return {
         ...cat,

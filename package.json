@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "chart.js": "^2.9.4",
-    "core-js": "^3.6.5",
+    "core-js": "^3.13.1",
     "firebase": "^8.3.1",
     "lodash": "^4.17.21",
     "materialize-css": "^1.0.0-rc.2",
@@ -18,20 +18,28 @@
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
+    "vue-class-component": "^7.2.6",
     "vue-moment": "^4.1.0",
+    "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
     "vuejs-paginate": "^2.1.0",
     "vuelidate": "^0.7.6",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@types/vue-moment": "^4.0.2",
+    "@types/vuelidate": "^0.7.14",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "^4.5.13",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-airbnb": "^5.0.2",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
@@ -39,7 +47,9 @@
     "lint-staged": "^9.5.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "typescript": "^4.3.2",
+    "vue-template-compiler": "^2.6.11",
+    "vuex-module-decorators": "^1.0.1"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

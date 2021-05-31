@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import firebase from 'firebase/app';
 
 export default {

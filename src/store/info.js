@@ -14,10 +14,10 @@ export default {
     },
   },
   actions: {
-    async updateInfo({ dispatch, commit, getters }, bill) {
+    async updateInfo({ dispatch, commit, getters }, data) {
       try {
         const uid = await dispatch('getUid');
-        const updateData = { ...getters.info, ...bill };
+        const updateData = { ...getters.info, ...data };
         await firebase.database().ref(`/users/${uid}/info`).update(updateData);
         commit('setInfo', updateData);
       } catch (e) {

@@ -55,7 +55,8 @@
           class="helper-text "
           :class="{invalid: ($v.amount.$dirty && !$v.amount.minValue) ||
               ($v.amount.$dirty && !$v.amount.required)}"
-        >Amount</span>
+        >Amount
+        </span>
       </div>
 
       <div class="input-field">

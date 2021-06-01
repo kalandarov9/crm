@@ -37,10 +37,12 @@
   </table>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
+
 const moment = require('moment');
 
-export default {
+export default Vue.extend({
   data() {
     return {
       monent: moment,
@@ -57,5 +59,5 @@ export default {
   mounted() {
     this.data = this.$moment(this.records[0].date).locale('ru').format('MM-DD-YYYY hh:mm:ss');
   },
-};
+});
 </script>

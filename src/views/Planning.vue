@@ -22,11 +22,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import currencyFilter from '@/filters/currency.filter';
 
-export default {
+export default Vue.extend({
   name: 'planning',
 
   data() {
@@ -72,6 +73,6 @@ export default {
       };
     });
   },
-};
+});
 
 </script>

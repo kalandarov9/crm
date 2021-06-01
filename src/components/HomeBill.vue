@@ -12,8 +12,10 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   props: ['rates'],
 
   data() {
@@ -38,5 +40,5 @@ export default {
   async mounted() {
     this.bill = this.$store.getters.info.bill;
   },
-};
+});
 </script>

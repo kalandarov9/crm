@@ -23,35 +23,33 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import HomeBill from '@/components/HomeBill.vue';
 import HomeCurrency from '@/components/HomeCurrency.vue';
 
-export default {
-  name: 'home',
-  data() {
-    return {
-      loading: true,
-      currency: null,
-    };
+@Component({
+  components: {
+    HomeBill, HomeCurrency,
   },
+})
+export default class Home extends Vue {
+  name = 'home';
 
-  methods: {
-    async refresh() {
-      this.loading = true;
-      this.currency = await this.$store.dispatch('fetchCurrency');
-      this.loading = false;
-    },
-  },
+  loading = true;
+
+  currency = null;
+
+  async refresh() {
+    this.loading = true;
+    this.currency = await this.$store.dispatch('fetchCurrency');
+    this.loading = false;
+  }
 
   async mounted() {
     this.currency = await this.$store.dispatch('fetchCurrency');
     await this.$store.dispatch('fetchInfo');
     this.loading = false;
-  },
-
-  components: {
-    HomeBill, HomeCurrency,
-  },
-};
+  }
+}
 </script>

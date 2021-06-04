@@ -46,10 +46,10 @@ export default Vue.extend({
     const categories = await this.$store.dispatch('getListsCategory');
     const records = await this.$store.dispatch('getListRecord');
 
-    this.categories = categories.map((cat) => {
+    this.categories = categories.map((cat :any) => {
       const res = records
-        .filter((r) => r.id === cat.id)
-        .reduce((total, record) => {
+        .filter((r: any) => r.id === cat.id)
+        .reduce((total :any, record :any) => {
           if (record.type === 'outcome') {
             return total + record.amount;
           }

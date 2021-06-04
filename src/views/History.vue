@@ -77,7 +77,6 @@ export default {
         datasets: [{
           label: '#',
           data: this.categories.map((c) => records.reduce((total, r) => {
-            console.log(r);
             if (r.id === c.id && r.type === 'outcome') {
               // eslint-disable-next-line no-param-reassign
               total += +r.amount;

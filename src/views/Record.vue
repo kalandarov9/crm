@@ -14,10 +14,7 @@
           >{{c.name}}</option>
         </select>
         <label>Выберите категорию</label>
-        {{ type }}
-        {{data}}
       </div>
-
       <p>
         <label>
           <input
@@ -84,27 +81,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
+// import Vue from 'vue';
+import M from 'materialize-css';
+import { Component, Mixins } from 'vue-property-decorator';
 import { Validations } from 'vuelidate-property-decorators';
+import { validationMixin } from 'vuelidate';
 import { required, minValue } from 'vuelidate/lib/validators';
-// import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
+import { IInfo } from '@/store/info';
+import { IDataRecord } from '@/api/interfaces';
 
 @Component({
   name: 'Record',
+  computed: {
+    ...mapGetters(['gInfo']),
+  },
 })
-export default class Record extends Vue {
-      public categories: [] = [];
+export default class Record extends Mixins(validationMixin) {
+      categories: object = [];
 
-      public category: null = null;
+      category: null = null;
 
-      public type: string = 'income';
+      type: string = 'income';
 
-      public amount: number = 1;
+      amount: number = 1;
 
-      public description: string = '';
+      description: string = '';
 
-      public data: any = ''
+      gInfo!: IInfo;
+
+      $message : any;
 
   @Validations()
   validations = {
@@ -115,18 +121,13 @@ export default class Record extends Vue {
     },
   };
 
-  get info(): object {
-    // return this.data = ...mapGetters(['info']);
-    this.data = this.$store.getters(['info']);
-    return this.data;
-  }
+  /// Вопрос
 
-  get checkNegativeAmount(): any {
+  get checkNegativeAmount() {
     if (this.type === 'income') {
       return true;
     }
-    console.log(this.type);
-    return this.data.info.bill >= this.amount;
+    return this.gInfo.bill >= this.amount;
   }
 
   // computed : {
@@ -139,88 +140,45 @@ export default class Record extends Vue {
   //   },
   // };
 
-  // public async submit() {
-  //   if (this.$v.$invalid) {
-  //     this.$v.$touch();
-  //   } else if (this.checkNegativeAmount) {
-  //     try {
-  //       const dataRecord = {
-  //         categoryId: this.category,
-  //         type: this.type,
-  //         amount: this.amount,
-  //         description: this.description,
-  //         date: new Date().toJSON(),
-  //         // date: new Date(),
-  //       };
-  //       await this.$store.dispatch('addRecord', dataRecord);
+  public async submit() {
+    if (this.$v.$invalid) {
+      this.$v.$touch();
+    } else if (this.checkNegativeAmount) {
+      try {
+        const dataRecord: IDataRecord = {
+          categoryId: this.category,
+          type: this.type,
+          amount: this.amount,
+          description: this.description,
+          date: new Date().toJSON(),
+        };
+        await this.$store.dispatch('addRecord', dataRecord);
+        const bill = this.type === 'income'
+          ? this.gInfo.bill + this.amount
+          : this.gInfo.bill - this.amount;
 
-  //       const bill = this.type === 'income'
-  //         ? this.info.bill + this.amount
-  //         : this.info.bill - this.amount;
-
-  //       await this.$store.dispatch('updateInfo', { bill });
-  //       this.$message('Запись созданна');
-  //       this.amount = 1;
-  //       this.description = '';
-  //       this.$v.$reset();
-  //       return;
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   } else {
-  //     this.$message(` Вам не хватило: ${this.amount - this.info.bill}`);
-  //   }
-  // }
-
-  // methods: {
-
-  //   async submit() {
-  //     if (this.$v.$invalid) {
-  //       this.$v.$touch();
-  //     } else if (this.checkNegativeAmount) {
-  //       try {
-  //         const dataRecord = {
-  //           categoryId: this.category,
-  //           type: this.type,
-  //           amount: this.amount,
-  //           description: this.description,
-  //           date: new Date().toJSON(),
-  //           // date: new Date(),
-  //         };
-  //         await this.$store.dispatch('addRecord', dataRecord);
-
-  //         const bill = this.type === 'income'
-  //           ? this.info.bill + this.amount
-  //           : this.info.bill - this.amount;
-
-  //         await this.$store.dispatch('updateInfo', { bill });
-  //         this.$message('Запись созданна');
-  //         this.amount = 1;
-  //         this.description = '';
-  //         this.$v.$reset();
-  //         return;
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     } else {
-  //       this.$message(` Вам не хватило: ${this.amount - this.info.bill}`);
-  //     }
-  //   },
-  // },
+        await this.$store.dispatch('updateInfo', { bill });
+        this.$message('Запись созданна');
+        this.amount = 1;
+        this.description = '';
+        this.$v.$reset();
+        return;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      this.$message(`Вам не хватило: ${this.amount - this.gInfo.bill}`);
+    }
+  }
 
   async mounted() {
     this.categories = await this.$store.dispatch('getListsCategory');
-    console.log(this.data);
-    // eslint-disable-next-line no-undef
-    // M.updateTextFields();
+    M.updateTextFields();
 
-    // if (this.categories.length) {
-    //   this.category = this.categories[0].id;
-    // }
-    // // eslint-disable-next-line no-undef
-    // setTimeout(() => { M.AutoInit(); }, 0);
+    if (this.categories[0]) {
+      this.category = this.categories[0].id;
+    }
+    setTimeout(() => { M.AutoInit(); }, 0);
   }
-
-// };
 }
 </script>

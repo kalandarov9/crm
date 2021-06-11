@@ -2,7 +2,7 @@
   <div>
     <div class="page-title">
       <h3>Планирование</h3>
-      <h4>{{info.bill | currency()}}</h4>
+      <h4>{{gInfo.bill | currency()}}</h4>
     </div>
     <section>
       <div v-for="cat of categories" :key="cat.id">
@@ -39,7 +39,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(['info']),
+    ...mapGetters(['gInfo']),
   },
 
   async mounted() {

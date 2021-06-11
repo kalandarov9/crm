@@ -38,7 +38,7 @@ export default Vue.extend({
   },
 
   async mounted() {
-    this.bill = this.$store.getters.info.bill;
+    this.bill = this.$store.getters.gInfo.bill;
   },
 });
 </script>

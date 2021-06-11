@@ -6,6 +6,7 @@
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "allowJs": true,
@@ -34,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/store/info.ts"  ],
+, "src/store/info.ts", "src/filters/localize.filter.ts"  ],
   "exclude": [
     "node_modules"
   ]

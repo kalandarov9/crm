@@ -1,25 +1,32 @@
 import {
   Module, VuexModule, Mutation, Action,
-// eslint-disable-next-line import/no-extraneous-dependencies
 } from 'vuex-module-decorators';
 import firebase from 'firebase/app';
+import { IDataRecord } from '@/api/interfaces';
 
 export interface IRecord {
-  id: string | null, // ? null зачем?
-  data: object,
+  id: firebase.database.Reference['key'],
+  data: IDataRecord,
+}
+
+export interface IAllRecords {
+  id: string,
+  idRecord: string,
+  amount: number,
+  type: string,
+  date?: Date
 }
 
 @Module
 export default class records extends VuexModule {
   @Action
-  async addRecord(dataRecord: object): Promise<IRecord> {
+  async addRecord(dataRecord: IDataRecord): Promise<IRecord> {
     try {
-      const uid = await this.context.dispatch('getUid');
-      // eslint-disable-next-line no-shadow
-      const records = await firebase.database().ref(`/users/${uid}/records/`).push(dataRecord);
-      console.log(typeof (records.key));
+      const uid: string = await this.context.dispatch('getUid');
+      const record = await firebase.database().ref(`/users/${uid}/records/`).push(dataRecord);
+      console.log(typeof (record.key));
       return {
-        id: records.key,
+        id: record.key,
         data: dataRecord,
       };
     } catch (e) {
@@ -31,16 +38,16 @@ export default class records extends VuexModule {
   @Action
   async getListRecord() {
     try {
-      const uid = await this.context.dispatch('getUid');
-      const ref = (await firebase.database()
+      const uid: string = await this.context.dispatch('getUid');
+      /// Как описать Interface
+      const ref: object = (await firebase.database()
         .ref(`/users/${uid}/records/`).once('value')).val();
       if (!ref) {
         return false;
       }
-      // eslint-disable-next-line no-shadow
-      const records : any = [];
+      const allRecords: IAllRecords[] = [];
       Object.entries(ref).forEach(([key, value] : any) => {
-        records.push({
+        allRecords.push({
           id: value.categoryId,
           idRecord: key,
           amount: value.amount,
@@ -48,7 +55,23 @@ export default class records extends VuexModule {
           date: value.date,
         });
       });
-      return records;
+      return allRecords;
+    } catch (e) {
+      this.context.commit('setError', e);
+      throw (e);
+    }
+  }
+
+  @Action
+  async getListRecordById(id: string): Promise<IRecord> {
+    try {
+      const uid: string = await this.context.dispatch('getUid');
+      const ref = (await firebase.database().ref(`/users/${uid}/records`)
+        .child(id).once('value')).val();
+      if (ref.type === 'income') { ref.class = 'green'; } else {
+        ref.class = 'red';
+      }
+      return { ...ref, id };
     } catch (e) {
       this.context.commit('setError', e);
       throw (e);

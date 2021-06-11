@@ -15,13 +15,15 @@
 
 </template>
 
-<script>
+<script lang="ts">
+import localizeFilter from '@/filters/localize.filter';
+
 export default {
   props: ['value'],
   data() {
     return {
       links: [
-        { title: 'Счет', url: '/', exact: true },
+        { title: localizeFilter('Menu_Account'), url: '/', exact: true },
         { title: 'История', url: '/history' },
         { title: 'Планирование', url: '/planning' },
         { title: 'Новая запись', url: '/record' },
